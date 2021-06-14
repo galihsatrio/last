@@ -1,0 +1,380 @@
+<div class="container-fluid" *ngIf="!showForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">{{pageTitle}}</h4>
+                <div class="page-title-right d-lg-block">
+                    <button type="button" class="btn btn-primary btn-sm" (click)="create()">
+                        <i class="fa fa-plus font-size-14 align-middle"></i>
+                        Tambah Data Barang
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-15">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <input type="text" 
+                                        class="form-control form-control-sm"
+                                        [(ngModel)]="modelParam.nama" 
+                                        name="paramnama" 
+                                        (keyup)="reloadDataTable()"
+                                        placeholder="Cari berdasarkan nama barang">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" 
+                                        class="form-control form-control-sm"
+                                        [(ngModel)]="modelParam.supplier" 
+                                        name="paramsupplier" 
+                                        (keyup)="reloadDataTable()"
+                                        placeholder="Cari berdasarkan nama supplier">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" 
+                                        class="form-control form-control-sm"
+                                        [(ngModel)]="modelParam.kode" 
+                                        name="paramnkode" 
+                                        (keyup)="reloadDataTable()"
+                                        placeholder="Cari berdasarkan kode barang">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table datatable [dtOptions]="dtOptions" class="table table-hover mobile-optimised mb-0"
+                                data-page-length="20">
+                                <thead class="thead-light">
+                                    <tr class="text-center">
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>Supplier</th>
+                                        <th>Kode</th>
+                                        <th>Tipe Barang</th>
+                                        <th>Satuan</th>
+                                        <th>Harga beli</th>
+                                        <th>Harga jual</th>
+                                        <th width="10%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let val of listData;index as i" (dblclick)="view(val)" class="text-center">
+                                        <td>{{i + 1}}</td>
+                                        <td>{{val.nama}}</td>
+                                        <td>{{val.supplier}}</td>
+                                        <td>{{val.kode}}</td>
+                                        <td>{{val.tipe_barang}}</td>
+                                        <td>{{val.satuan}}</td>
+                                        <td>Rp.{{val.harga_beli | number: "1.2-2" }}</td>
+                                        <td>Rp.{{val.harga_jual | number: "1.2-2" }}</td>
+                                        <td >
+                                            <ul class="list-inline mb-0">
+                                                <li class="list-inline-item">
+                                                    <a href="javascript:void(0);" (click)="edit(val)"
+                                                        class="mr-2 mb-primary" placement="top" ngbTooltip="Edit">
+                                                        <i class="fa fa-edit font-size-14 align-middle"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="list-inline-item">
+                                                    <a href="javascript:void(0);" (click)="delete(val)"
+                                                        class="mr-2 mb-primary" placement="left" ngbTooltip="Hapus">
+                                                        <i class="fa fa-trash font-size-14 align-middle"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid" *ngIf="showForm">
+    <app-page-title [title]="pageTitle" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="" disabled="isView">
+                        <fieldset [disabled]="isView">
+                            <div class="row">
+                                <div class="col-md-12" style="padding-bottom: 10px;">
+                                    <span style="font-style: italic;font-size: 11px;font-weight: bold;">Tanda
+                                        <span style="font-size: 13px;color: red;">*</span>Wajib Diisi </span>
+                                    <br>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label for="nama" class="col-md-4 col-form-label col-form-label-sm">Nama Barang</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control form-control-sm" name="nama" [(ngModel)]="model.nama" placeholder="nama barang">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="supplier" class="col-md-4 col-form-label col-form-label-sm">Supplier</label>
+                                        <div class="col-md-7">
+                                            <ng-select 
+                                                [(ngModel)]="model.m_supplier_id"
+                                                [items]="listSupplier" 
+                                                bindLabel="nama" 
+                                                [disabled]="isView || isEdit"
+                                                bindValue="id" 
+                                                placeholder="pilih supplier"
+                                                name="supplier"
+                                                appendTo="body"
+                                            ></ng-select>
+                                        </div>
+                                        <div class="col-md-1" *ngIf="!isView">
+                                            <a href="javascript:void(0);" (click)="addSupplier(modalSupplier)" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-plus font-size-10"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="tipe_barang" class="col-md-4 col-form-label col-form-label-sm">Tipe Barang</label>
+                                        <div class="col-md-7">
+                                            <ng-select 
+                                                [(ngModel)]="model.m_tipe_barang_id"
+                                                [items]="listTipe" 
+                                                bindLabel="nama" 
+                                                [disabled]="isView || isEdit"
+                                                bindValue="id" 
+                                                placeholder="pilih tipe barang"
+                                                appendTo="body"
+                                                name="tipe_barang"
+                                            ></ng-select>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a href="javascript:void(0);" (click)="addTipe(modalTipe)" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-plus font-size-10 mr-1"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="satuan" class="col-md-4 col-form-label col-form-label-sm">Satuan</label>
+                                        <div class="col-md-7">
+                                            <ng-select 
+                                                [(ngModel)]="model.m_satuan_id"
+                                                [items]="listSatuan" 
+                                                bindLabel="nama" 
+                                                [disabled]="isView || isEdit"
+                                                bindValue="id" 
+                                                placeholder="satuan"
+                                                appendTo="body"
+                                                name="satuan"
+                                            ></ng-select>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a href="javascript:void(0);" (click)="addSatuan(modalSatuan)" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-plus font-size-10 mr-1"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="harga_beli" class="col-md-4 col-form-label col-form-label-sm">Harga Beli</label>
+                                        <div class="col-md-8">
+                                            <input 
+                                                type="text" 
+                                                class="form-control 
+                                                form-control-sm" 
+                                                name="harga_beli" 
+                                                [(ngModel)]="model.harga_beli" 
+                                                placeholder="harga beli"
+                                                mask="separator" 
+                                                thousandSeparator="."
+                                            />
+                                        </div>  
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="harga_jual" class="col-md-4 col-form-label col-form-label-sm">Harga Jual</label>
+                                        <div class="col-md-8">
+                                            <input 
+                                                type="text" 
+                                                class="form-control form-control-sm" 
+                                                name="harga_jual" 
+                                                [(ngModel)]="model.harga_jual" 
+                                                placeholder="harga jual"
+                                                mask="separator" 
+                                                thousandSeparator="."
+                                            />
+                                        </div>  
+                                    </div>
+                
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div class="card-footer">
+                    <div class="float-right">
+                        <button class="btn btn-light btn-sm mr-2" (click)="index()">
+                            <i class="fa fa-chevron-left font-size-14 align-middle mr-2"></i>
+                            Kembali
+                        </button>
+                        <button class="btn btn-primary btn-sm " (click)="save()">
+                            <i class="fa fa-save font-size-14 align-middle mr-2" *ngIf="!isView"></i>
+                            Save
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Supplier -->
+<ng-template #modalSupplier let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title mt-0">Tambah Supplier</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form action="">
+                    <fieldset>
+                        <div class="row mb-3">
+                            <div class="col-md-12 pb-2">
+                                <span style="font-style: italic; font-size: 11px; font-weight:bold">
+                                    Tanda
+                                    <span class="font-size-12 text-danger">*</span>
+                                    Wajib Diisi!
+                                    <br>
+                                </span>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="kode" class="col-md-4 col-form-label col-form-label-sm">Kode</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="supplier.kode" name="kode" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="nama" class="col-md-4 col-form-label col-form-label-sm">Nama</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="supplier.nama" name="nama" placeholder="nama supplier">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="float-right">
+            <button  class="btn btn-primary btn-sm" (click)="saveSupplier()">
+                <i class="fa fa-save font-size-12 align-middle mr-2"></i>
+                Save
+            </button>
+        </div>
+    </div>
+</ng-template>
+<!-- end modal -->
+
+<!-- Modal Tipe Barang -->
+<ng-template #modalTipe let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title mt-0">Tambah Tipe Barang</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form action="">
+                    <fieldset>
+                        <div class="row mb-3">
+                            <div class="col-md-12 pb-2">
+                                <span style="font-style: italic; font-size: 11px; font-weight:bold">
+                                    Tanda
+                                    <span class="font-size-12 text-danger">*</span>
+                                    Wajib Diisi!
+                                    <br>
+                                </span>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="nama" class="col-md-4 col-form-label col-form-label-sm">Nama</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="tipe.nama" name="nama" placeholder="nama tipe barang">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="float-right">
+            <button  class="btn btn-primary btn-sm" (click)="saveTipe()">
+                <i class="fa fa-save font-size-12 align-middle mr-2"></i>
+                Save
+            </button>
+        </div>
+    </div>
+</ng-template>
+<!-- end modal -->
+
+<!-- Modal Satuan -->
+<ng-template #modalSatuan let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title mt-0">Tambah Satuan</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form action="">
+                    <fieldset>
+                        <div class="row mb-3">
+                            <div class="col-md-12 pb-2">
+                                <span style="font-style: italic; font-size: 11px; font-weight:bold">
+                                    Tanda
+                                    <span class="font-size-12 text-danger">*</span>
+                                    Wajib Diisi!
+                                    <br>
+                                </span>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="nama" class="col-md-4 col-form-label col-form-label-sm">Nama</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="satuan.nama" name="nama" placeholder="nama satuan">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="float-right">
+            <button  class="btn btn-primary btn-sm" (click)="saveSatuan()">
+                <i class="fa fa-save font-size-12 align-middle mr-2"></i>
+                Save
+            </button>
+        </div>
+    </div>
+</ng-template>
+<!-- end modal -->

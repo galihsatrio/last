@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        .table {
+            border-top-style: none;
+            border-left-style: none;
+            border-right-style: none;
+            border-bottom-style: none;
+        }
+    </style>
+    <title>Hello, world!</title>
+  </head>
+  <body style="font-family: Space Mono;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <div class="head">
+                    <div class="title text-center">
+                        <h4>Bagong Mart</h4>
+                    </div>
+                    <hr style="border-top: 2px dashed black">
+                    <div class="subtitle">
+                        <p> Invoice : {{ data.invoice }}</p>
+                        <p>Tanggal  : {{ data.tanggal }}</p>
+                        <p>Konsumen : {{ data.konsumen }}</p>
+                    </div>
+                </div>
+                <hr style="border-top: 2px dashed black">
+                <div class="body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td class="text-left">Barang</td>
+                                <td class="text-center">jumlah</td>
+                                <td class="text-center">harga</td>
+                                <td class="text-center">total</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in detail %}
+                            <tr>
+                                <td width="35%" style="font-size: 15px;">{{ item.barang }}</td>
+                                <td width="10%" class="text-center"> {{ item.jumlah }} </td>
+                                <td> {{ item.harga }} </td>
+                                <td> {{ item.total }} </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-right"> Subtotal :  </td>
+                                <td> {{ data.subtotal }} </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="text-right"> Diskon :  </td>
+                                <td> {{ data.diskon }}% </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="text-right"> Total :  </td>
+                                <td> {{ data.total }} </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <hr style="border-top: 2px dashed black">
+                    <h6 class="text-center">STRUK INI MERUPAKAN <br> BUKTI PEMBAYARAN YANG SAH <br> BAGONGMART</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

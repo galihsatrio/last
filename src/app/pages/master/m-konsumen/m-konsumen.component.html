@@ -1,0 +1,119 @@
+<div class="container-fluid" *ngIf="!showForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-title-box d-flex align-items-cente justify-content-between">
+                <h4 class="mb-0 font-size-18">{{ pageTitle }}</h4>
+                <div class="page-title-right d-lg-block">
+                    <button class="btn btn-primary btn-sm" (click)="create()">
+                        <i class="fa fa-plus font-size-12"></i>
+                        Tambah Konsumen
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-15">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control form-control-sm" [(ngModel)]="modelParam.nama" name="paramnama" (keyup)="reloadDataTable()" placeholder="cari berdasarkan nama">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="table-responsive">
+                            <table datatable [dtOptions]="dtOptions" class="table table-hover mobile-optimised mb-0" data-page-length='10'>
+                                <thead class="thead-light">
+                                    <tr class="text-center">
+                                        <th width="5%">No</th>
+                                        <th>Nama</th>
+                                        <th>Kode</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let val of listData; index as i" (dblclick)="view(val)" class="text-center">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ val.nama }}</td>
+                                        <td>{{ val.kode }}</td>
+                                        <td class="row-action">
+                                            <ul class="list-inline mb-0">
+                                                <li class="list-inline-item">
+                                                    <a href="javascript:void(0)" (click)="edit(val)" class="mr-2 mb-primary" placement="top" ngbToolTip="Edit">
+                                                        <i class="fa fa-edit font-size-14 align-middle"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="list-inline-item">
+                                                    <a href="javascript:void(0)" (click)="delete(val)" class="mr-2 mb-primary" placement="top" ngbToolTip="Hapus">
+                                                        <i class="fa fa-trash font-size-14 align-middle"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid" *ngIf="showForm">
+    <app-page-title [title]="pageTitle" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="" disabled="isView">
+                        <fieldset [disabled]="isView">
+                            <div class="row">
+                                <div class="col-md-12 pb-2">
+                                    <span style="font-style: italic; font-size: 11px; font-weight:bold">
+                                        Tanda
+                                        <span class="font-size-12 text-danger">*</span>
+                                        Wajib Diisi!
+                                        <br>
+                                    </span>
+                                </div>
+                                <div class="col-md-6 mt-3">
+                                    <div class="form-group row">
+                                        <label for="kode" class="col-md-4 col-form-label col-form-label-sm">Kode</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="model.kode" name="kode" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="nama" class="col-md-4 col-form-label col-form-label-sm">Nama</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="model.nama" name="nama" placeholder="nama konsumen">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="float-right">
+                        <button class="btn btn-light btn-sm mr-2" (click)="index()">
+                            <i class="fa fa-chevron-left font-size-12 align-middle"></i>
+                            Kembali
+                        </button>
+                        <button class="btn btn-primary btn-sm" *ngIf="!isView" (click)="save()">
+                            <i class="fa fa-save font-size-12 align-middle mr-2"></i>
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

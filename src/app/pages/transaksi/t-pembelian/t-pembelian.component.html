@@ -1,0 +1,241 @@
+<div class="container-fluid" *ngIf="!showForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-title-box d-flex align-items-cente justify-content-between">
+                <h4 class="mb-0 font-size-18">{{ pageTitle }}</h4>
+                <div class="page-title-right d-lg-block">
+                    <button class="btn btn-primary btn-sm" (click)="create()">
+                        <i class="fa fa-plus font-size-12"></i>
+                        Tambah Transaksi Pembelian
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12"> 
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-15">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <input type="text" 
+                                    class="form-control form-control-sm" 
+                                    [(ngModel)]="modelParam.invoice" 
+                                    name="paraminvoice" 
+                                    (keyup)="reloadDataTable()" 
+                                    placeholder="cari berdasarkan invoice">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="table-responsive">
+                            <table datatable [dtOptions]="dtOptions" class="table table-hover mobile-optimised mb-0" data-page-length="20">
+                                <thead class="thead-light">
+                                    <tr class="text-center">
+                                        <th width="5%">No</th>
+                                        <th>Invoice</th>
+                                        <th>Tanggal</th>
+                                        <th>Total</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let val of listData; index as i" (dblclick)="view(val)" class="text-center">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ val.invoice }}</td>
+                                        <td>{{ val.tanggal }}</td>
+                                        <td>Rp.{{ val.total | number: "1.2-2" }}</td>
+                                        <td class="row-action">
+                                            <ul class="list-inline mb-0">
+                                                <li class="list-inline-item">
+                                                    <a href="javascript:void(0);" (click)="viewStruk(modalStruk, val)">
+                                                        <i class="fa fa-eye font-size-11 align-middle"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="list-inline-item">
+                                                    <a href="javascript:void(0)" (click)="delete(val)" class="ml-2 mb-primary" placement="top" ngbToolTip="Hapus">
+                                                        <i class="fa fa-trash font-size-11 align-middle"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid" *ngIf="showForm">
+    <app-page-title [title]="pageTitle" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="" disabled="isView">
+                        <fieldset [disabled]="isView">
+                            <div class="row mb-3">
+                                <div class="col-md-12 pb-2">
+                                    <span style="font-style: italic; font-size: 11px; font-weight:bold">
+                                        Tanda
+                                        <span class="font-size-12 text-danger">*</span>
+                                        Wajib Diisi!
+                                        <br>
+                                    </span>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label for="invoice" class="col-md-4 col-form-label col-form-label-sm">invoice</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="model.invoice" name="invoice" placeholder="invoice" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="tanggal" class="col-md-4 col-form-label col-form-label-sm">Tanggal</label>
+                                        <div class="col-md-8">
+                                            <input 
+                                                ngbDatepicker
+                                                class="form-control form-control-sm" 
+                                                type="text" 
+                                                name="tanggal" 
+                                                [(ngModel)]="model.tanggal" 
+                                                placeholder="tanggal"
+                                                #tanggal = "ngbDatepicker"
+                                                [minDate]="{ year: 1950, month: 1, day: 1}"
+                                                (click)="tanggal.toggle()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" *ngIf="!isView">
+                                        <label class="col-md-4 col-form-label col-form-label-sm required">Foto</label>
+                                        <div class="col-md-8">
+                                            <div class="custom-file margin-top">
+                                                <input type="file" id="customFile" name="logo" class="custom-file-input custom-file-input-sm" (change)="onFileChange($event)"/>
+                                                <br /><br />
+                                                <label for="customFile" class="custom-file-label etxt-center">Masukkan Struk</label>
+                                              </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <div class="form-group row">
+                                        <div class="col-md-8">
+                                          <div class="boxsimg mb-2">
+                                            <img alt="250x250" style="max-width: 200px;" *ngIf="model.struk.base64" [src]="model.struk.base64" data-holder-rendered="true" class="text-center"/>
+                                            <img alt="250x250"  style="max-width: 200px;" *ngIf="!model.struk.base64" [src]="model.struk" data-holder-rendered="true" class="text-center"/>
+                                          </div>
+                                        </div>
+                                      </div>
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover text-center mobile-optimised mb-0" data-page-length="10">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th width="5%" *ngIf="!isView">
+                                                        <button class="btn btn-sm btn-primary" (click)="addRow(listPembelian)">
+                                                            <i class="fa fa-plus font-size-8"></i>
+                                                        </button>
+                                                    </th>
+                                                    <th *ngIf="isView">No</th>
+                                                    <th>Barang</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Harga Beli</th>
+                                                    <th>Subtotal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let val of listPembelian; index as i">
+                                                    <td *ngIf="!isView">
+                                                        <button class="btn btn-sm btn-danger" (click)="removeRow(i)">
+                                                            <i class="fa fa-minus font-size-8 aign-midle"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td *ngIf="isView"> {{ i + 1}} </td>
+                                                    <td>
+                                                        <ng-select
+                                                            [(ngModel)]="val.m_barang_id"
+                                                            [items]="listBarang"
+                                                            bindLabel="nama"
+                                                            bindValue="id"
+                                                            [disabled]="isView"
+                                                            name="barang_{{i}}"
+                                                            placeholder="pilih barang"
+                                                            appendTo="body"
+                                                            (change)="harga(val, val.m_barang_id)"
+                                                        ></ng-select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" min="1" [(ngModel)]="val.jumlah" class="form-control form-control-sm" name="jumlah_{{i}}" (change)="subtotal()">
+                                                    </td>
+                                                    <td>
+                                                        <input 
+                                                            type="text" 
+                                                            [(ngModel)]="val.harga_beli" 
+                                                            class="form-control form-control-sm" 
+                                                            name="harga_beli_{{i}}" 
+                                                            mask="separator" 
+                                                            thousandSeparator="."
+                                                            disabled>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" [(ngModel)]="val.subtotal" class="form-control form-control-sm" name="subtotal_{{i}}" disabled>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" class="text-right">Total</td>
+                                                    <td>
+                                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="model.total" name="total" disabled>
+                                                    </td>
+                                                </tr>
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="float-right">
+                        <button class="btn btn-light btn-sm mr-2" (click)="index()">
+                            <i class="fa fa-chevron-left font-size-12 align-middle"></i>
+                            Kembali
+                        </button>
+                        <button class="btn btn-primary btn-sm" *ngIf="!isView" (click)="save()">
+                            <i class="fa fa-save font-size-12 align-middle mr-2"></i>
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #modalStruk let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title mt-0">Detail Struk</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="boxsimg mb-2">
+                    <img alt="250x250" style="max-width: 400px;" *ngIf="model.struk.base64" [src]="model.struk.base64" data-holder-rendered="true" class="text-center"/>
+                    <img alt="250x250"  style="max-width: 400px;" *ngIf="!model.struk.base64" [src]="model.struk" data-holder-rendered="true" class="text-center"/>
+                  </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

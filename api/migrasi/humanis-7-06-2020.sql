@@ -1,0 +1,1 @@
+ALTER TABLE `k_inventaris` CHANGE `is_deleted` `is_deleted` TINYINT NOT NULL DEFAULT '0';

@@ -1,0 +1,6 @@
+@media print {
+    tr {
+        background-color: #1a4567 !important;
+        -webkit-print-color-adjust: exact; 
+    }
+}

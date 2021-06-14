@@ -1,0 +1,52 @@
+<div class="container-fluid" *ngIf="!showForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">{{ pageTitle }}</h4>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row-mb-15">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <!-- filter -->
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        [(ngModel)]="modelParam.nama"
+                                        name="paramnama"
+                                        placeholder="cari berdasarkan nama barang"
+                                    />
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="table-resposive">
+                            <table datatable [dtOptions]="dtOptions" class="table table-hover text-center mobile-optimised mb-0" data-page-length="20">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Barang</th>
+                                        <th>Kode Barang</th>
+                                        <th>Stok</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let val of listData; index as i">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ val.barang }}</td>
+                                        <td>{{ val.kode_barang }}</td>
+                                        <td>{{ val.stok }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card p-0" style="background-color: #50a5f1; font-style: italic">
+                <div class="card-body">
+                    <div class="row text-white">
+                        <div class="col-md-6 align-items-center text-center">
+                            <h3 class="text-white mt-2">Barang</h3>
+                            <h3 class="text-white">{{ jumlahBarang }}</h3>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <i class="fas fa-hamburger fa-5x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card p-0" style="background-color: #e83e8c;" >
+                <div class="card-body">
+                    <div class="row text-white">
+                        <div class="col-md-6 align-items-center text-center" style="font-style: italic">
+                            <h3 class="text-white mt-2">Konsumen</h3>
+                            <h3 class="text-white">{{ jumlahKonsumen }}</h3>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <i class="fas fa-user fa-5x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card p-0" style="background-color: #34c38f;">
+                <div class="card-body">
+                    <div class="row text-white">
+                        <div class="col-md-6 align-items-center text-center" style="font-style: italic">
+                            <h3 class="text-white mt-2">Supplier</h3>
+                            <h3 class="text-white">{{ jumlahSupplier }}</h3>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <i class="fas fa-parachute-box fa-5x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="chart-wrapper">
+                        <canvas
+                            baseChart
+                            [data]="doughnutChartData"
+                            [labels]="doughnutChartLabels"
+                            [colors]="donutColors"
+                            [chartType]="doughnutChartType"
+                        ></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="chart-wrapper">
+                        <canvas
+                            baseChart
+                            width="400"
+                            height="400"
+                            [datasets]="lineChartData"
+                            [labels]="lineChartLabels"
+                            [options]="lineChartOptions"
+                            [colors]="lineChartColors"
+                            [legend]="lineChartLegend"
+                            [chartType]="lineChartType"
+                            [plugins]="lineChartPlugins"
+                        ></canvas>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>

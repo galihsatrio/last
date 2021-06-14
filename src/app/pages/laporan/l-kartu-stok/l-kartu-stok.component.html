@@ -1,0 +1,111 @@
+<div class="container-fluid" *ngIf="!showForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-title-box d-flex align-items-cente justify-content-between">
+                <h4 class="mb-0 font-size-18">{{ pageTitle }}</h4>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card pt-3 pb-2">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <input
+                                type="text"
+                                class="form-control form-control-sm"
+                                name="periode"
+                                daterangepicker
+                                [options]="options"
+                                (selected)="selectedDate($event, daterange)"
+                                placeholder="Periode"
+                            />
+                        </div>
+                       <div class="col-md-4">
+                            <ng-select
+                                [(ngModel)]="model.m_barang_id"
+                                [items]="listBarang"
+                                bindLabel="nama"
+                                bindValue="id"
+                                placeholder="cari barang"
+                                name="m_barang_id"
+                                appendTo="body"
+                            ></ng-select>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <button class="btn btn-primary btn-sm" (click)="tampil(0, 0)">
+                                Tampilkan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <div class="float-right mr-3">
+                <button class="btn btn-success btn-sm mr-2" (click)="tampil(1, 0)">
+                    <i class="fa fa-print font-size-12 align-middle"></i>
+                    &nbsp;
+                    Print excel
+                </button>
+                <button class="btn btn-sm btn-primary" (click)="tampil(0, 1)">
+                    <i class="fa fa-print font-size-8"></i>
+                    &nbsp;
+                    Print pdf
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-12"> 
+            <div class="card">
+                <div class="card-body">
+                    <div class="row justify-content-end mb-2">
+                        <div class="col text-right">
+                            <h5 class="mr-5">Stok Awal : {{ stokAwal }} </h5>
+                        </div>
+                    </div>
+                    <div class="row mb-15">
+                        <div class="table-responsive">
+                            <table class="table table-hover text-center mobile-optimised mb-0" data-page-length="20">
+                                <thead class="thead-light">
+                                    <tr class="text-center">
+                                        <th width="5%">No</th>
+                                        <th>Tanggal</th>
+                                        <th>Barang</th>
+                                        <th>Kode</th>
+                                        <th>Dari</th>
+                                        <th>Masuk</th>
+                                        <th>Keluar</th>
+                                        <th>Stok</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let data of listData; index as i">
+                                    <tr>
+                                        <td [attr.rowspan]="data.rows + 1">{{ i + 1 }}</td>
+                                        <td [attr.rowspan]="data.rows + 1">{{ data.tanggal }}</td>
+                                    </tr>
+                                    <tr *ngFor="let val of data.details; index as i" class="text-center">
+                                        <td>{{ val.barang }}</td>
+                                        <td>{{ val.kode_barang }}</td>
+                                        <td>
+                                            <span *ngIf="val.keluar == 0">Pembelian</span> 
+                                            <span *ngIf="val.masuk == 0">Penjualan</span> 
+                                        </td>
+                                        <td>{{ val.masuk }}</td>
+                                        <td>{{ val.keluar }}</td>
+                                        <td> {{ val.stok }} </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
